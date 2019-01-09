@@ -5,7 +5,7 @@ import { encodePathAsUrl } from '../../lib/path'
 
 import { ReleaseNote, ReleaseSummary } from '../../models/release-notes'
 
-import { updateStore } from '../lib/update-store'
+// import { updateStore } from '../lib/update-store'
 import { ButtonGroup } from '../lib/button-group'
 import { Button } from '../lib/button'
 
