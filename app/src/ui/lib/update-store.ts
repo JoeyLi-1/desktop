@@ -183,7 +183,7 @@ class UpdateStore {
     // before we call the function to quit.
     // eslint-disable-next-line no-sync
     sendWillQuitSync()
-    autoUpdater.quitAndInstall()
+    // autoUpdater.quitAndInstall()
   }
 }
 

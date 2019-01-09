@@ -68,7 +68,7 @@ export class UpdateAvailable extends React.Component<
   }
 
   private updateNow = () => {
-    updateStore.quitAndInstallUpdate()
+    // updateStore.quitAndInstallUpdate()
   }
 
   private dismiss = () => {

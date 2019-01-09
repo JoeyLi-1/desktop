@@ -185,6 +185,6 @@ export class ReleaseNotes extends React.Component<IReleaseNotesProps, {}> {
   }
 
   private updateNow = () => {
-    updateStore.quitAndInstallUpdate()
+    // updateStore.quitAndInstallUpdate()
   }
 }

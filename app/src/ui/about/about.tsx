@@ -97,7 +97,7 @@ export class About extends React.Component<IAboutProps, IAboutState> {
   }
 
   private onQuitAndInstall = () => {
-    updateStore.quitAndInstallUpdate()
+    // updateStore.quitAndInstallUpdate()
   }
 
   private renderUpdateButton() {
