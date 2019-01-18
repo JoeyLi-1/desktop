@@ -162,12 +162,12 @@ class UpdateStore {
 
     this.userInitiatedUpdate = !inBackground
 
-    try {
-      autoUpdater.setFeedURL({ url: __UPDATES_URL__ })
-      autoUpdater.checkForUpdates()
-    } catch (e) {
-      this.emitError(e)
-    }
+    // try {
+    //   autoUpdater.setFeedURL({ url: __UPDATES_URL__ })
+    //   autoUpdater.checkForUpdates()
+    // } catch (e) {
+    //   this.emitError(e)
+    // }
   }
 
   /** Quit and install the update. */
