@@ -25,6 +25,7 @@ import { spawnAndComplete } from './spawn'
 
 import { DiffParser } from '../diff-parser'
 import { getOldPathOrDefault } from '../get-old-path'
+import { getCaptures } from '../helpers/regex'
 
 /**
  * V8 has a limit on the size of string it can create (~256MB), and unless we want to
@@ -97,11 +98,13 @@ const imageFileExtensions = new Set([
 export async function getCommitDiff(
   repository: Repository,
   file: FileChange,
-  commitish: string
+  commitish: string,
+  hideWhitespaceInDiff: boolean = false
 ): Promise<IDiff> {
   const args = [
     'log',
     commitish,
+    ...(hideWhitespaceInDiff ? ['-w'] : []),
     '-m',
     '-1',
     '--first-parent',
@@ -137,13 +140,15 @@ export async function getWorkingDirectoryDiff(
   repository: Repository,
   file: WorkingDirectoryFileChange
 ): Promise<IDiff> {
-  let successExitCodes: Set<number> | undefined
-  let args: Array<string>
-
   // `--no-ext-diff` should be provided wherever we invoke `git diff` so that any
   // diff.external program configured by the user is ignored
+  const args = ['diff', '--no-ext-diff', '--patch-with-raw', '-z', '--no-color']
+  const successExitCodes = new Set([0])
 
-  if (file.status.kind === AppFileStatusKind.New) {
+  if (
+    file.status.kind === AppFileStatusKind.New ||
+    file.status.kind === AppFileStatusKind.Untracked
+  ) {
     // `git diff --no-index` seems to emulate the exit codes from `diff` irrespective of
     // whether you set --exit-code
     //
@@ -154,18 +159,8 @@ export async function getWorkingDirectoryDiff(
     //
     // citation in source:
     // https://github.com/git/git/blob/1f66975deb8402131fbf7c14330d0c7cdebaeaa2/diff-no-index.c#L300
-    successExitCodes = new Set([0, 1])
-    args = [
-      'diff',
-      '--no-ext-diff',
-      '--no-index',
-      '--patch-with-raw',
-      '-z',
-      '--no-color',
-      '--',
-      '/dev/null',
-      file.path,
-    ]
+    successExitCodes.add(1)
+    args.push('--no-index', '--', '/dev/null', file.path)
   } else if (file.status.kind === AppFileStatusKind.Renamed) {
     // NB: Technically this is incorrect, the best kind of incorrect.
     // In order to show exactly what will end up in the commit we should
@@ -174,26 +169,9 @@ export async function getWorkingDirectoryDiff(
     // already staged to the renamed file which differs from our other diffs.
     // The closest I got to that was running hash-object and then using
     // git diff <blob> <blob> but that seems a bit excessive.
-    args = [
-      'diff',
-      '--no-ext-diff',
-      '--patch-with-raw',
-      '-z',
-      '--no-color',
-      '--',
-      file.path,
-    ]
+    args.push('--', file.path)
   } else {
-    args = [
-      'diff',
-      'HEAD',
-      '--no-ext-diff',
-      '--patch-with-raw',
-      '-z',
-      '--no-color',
-      '--',
-      file.path,
-    ]
+    args.push('HEAD', '--', file.path)
   }
 
   const { output, error } = await spawnAndComplete(
@@ -229,7 +207,10 @@ async function getImageDiff(
       current = await getWorkingDirectoryImage(repository, file)
     }
 
-    if (file.status.kind !== AppFileStatusKind.New) {
+    if (
+      file.status.kind !== AppFileStatusKind.New &&
+      file.status.kind !== AppFileStatusKind.Untracked
+    ) {
       // If we have file.oldPath that means it's a rename so we'll
       // look for that file.
       previous = await getBlobImage(
@@ -245,7 +226,10 @@ async function getImageDiff(
     }
 
     // File status can't be conflicted for a file in a commit
-    if (file.status.kind !== AppFileStatusKind.New) {
+    if (
+      file.status.kind !== AppFileStatusKind.New &&
+      file.status.kind !== AppFileStatusKind.Untracked
+    ) {
       // TODO: commitish^ won't work for the first commit
       //
       // If we have file.oldPath that means it's a rename so we'll
@@ -441,3 +425,32 @@ export async function getWorkingDirectoryImage(
     contents.length
   )
 }
+
+/**
+ * List the modified binary files' paths in the given repository
+ *
+ * @param repository to run git operation in
+ * @param ref ref (sha, branch, etc) to compare the working index against
+ *
+ * if you're mid-merge pass `'MERGE_HEAD'` to ref to get a diff of `HEAD` vs `MERGE_HEAD`,
+ * otherwise you should probably pass `'HEAD'` to get a diff of the working tree vs `HEAD`
+ */
+export async function getBinaryPaths(
+  repository: Repository,
+  ref: string
+): Promise<ReadonlyArray<string>> {
+  const { output } = await spawnAndComplete(
+    ['diff', '--numstat', '-z', ref],
+    repository.path,
+    'getBinaryPaths'
+  )
+  const captures = getCaptures(output.toString('utf8'), binaryListRegex)
+  if (captures.length === 0) {
+    return []
+  }
+  // flatten the list (only does one level deep)
+  const flatCaptures = captures.reduce((acc, val) => acc.concat(val))
+  return flatCaptures
+}
+
+const binaryListRegex = /-\t-\t(?:\0.+\0)?([^\0]*)/gi

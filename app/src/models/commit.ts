@@ -37,6 +37,20 @@ function extractCoAuthors(trailers: ReadonlyArray<ITrailer>) {
   return coAuthors
 }
 
+/**
+ * A minimal shape of data to represent a commit, for situations where the
+ * application does not require the full commit metadata.
+ *
+ * Equivalent to the output where Git command support the
+ * `--oneline --no-abbrev-commit` arguments to format a commit.
+ */
+export type CommitOneLine = {
+  /** The full commit id associated with the commit */
+  readonly sha: string
+  /** The first line of the commit message */
+  readonly summary: string
+}
+
 /** A git commit. */
 export class Commit {
   /**
@@ -53,24 +67,28 @@ export class Commit {
 
   /**
    * @param sha The commit's SHA.
+   * @param shortSha The commit's shortSHA.
    * @param summary The first line of the commit message.
    * @param body The commit message without the first line and CR.
    * @param author Information about the author of this commit.
    *               Includes name, email and date.
    * @param committer Information about the committer of this commit.
-   *                 Includes name, email and date.
+   *                  Includes name, email and date.
    * @param parentSHAS The SHAs for the parents of the commit.
    * @param trailers Parsed, unfolded trailers from the commit message body,
    *                 if any, as interpreted by `git interpret-trailers`
+   * @param tags Tags associated with this commit.
    */
   public constructor(
     public readonly sha: string,
+    public readonly shortSha: string,
     public readonly summary: string,
     public readonly body: string,
     public readonly author: CommitIdentity,
     public readonly committer: CommitIdentity,
     public readonly parentSHAs: ReadonlyArray<string>,
-    public readonly trailers: ReadonlyArray<ITrailer>
+    public readonly trailers: ReadonlyArray<ITrailer>,
+    public readonly tags: ReadonlyArray<string>
   ) {
     this.coAuthors = extractCoAuthors(trailers)
 

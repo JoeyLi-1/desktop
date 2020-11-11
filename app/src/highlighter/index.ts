@@ -72,6 +72,8 @@ const extensionModes: ReadonlyArray<IModeDefinition> = [
   {
     install: () => import('codemirror/mode/htmlembedded/htmlembedded'),
     mappings: {
+      '.aspx': 'application/x-aspx',
+      '.cshtml': 'application/x-aspx',
       '.jsp': 'application/x-jsp',
     },
   },
@@ -113,6 +115,16 @@ const extensionModes: ReadonlyArray<IModeDefinition> = [
       '.vcxproj': 'text/xml',
       '.vbproj': 'text/xml',
       '.svg': 'text/xml',
+      '.resx': 'text/xml',
+      '.props': 'text/xml',
+      '.targets': 'text/xml',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/diff/diff'),
+    mappings: {
+      '.diff': 'text/x-diff',
+      '.patch': 'text/x-diff',
     },
   },
   {
@@ -232,6 +244,163 @@ const extensionModes: ReadonlyArray<IModeDefinition> = [
     install: () => import('codemirror/mode/powershell/powershell'),
     mappings: {
       '.ps1': 'application/x-powershell',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/vb/vb'),
+    mappings: {
+      '.vb': 'text/x-vb',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/fortran/fortran'),
+    mappings: {
+      '.f': 'text/x-fortran',
+      '.f90': 'text/x-fortran',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/lua/lua'),
+    mappings: {
+      '.lua': 'text/x-lua',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/crystal/crystal'),
+    mappings: {
+      '.cr': 'text/x-crystal',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/julia/julia'),
+    mappings: {
+      '.jl': 'text/x-julia',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/stex/stex'),
+    mappings: {
+      '.tex': 'text/x-stex',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/sparql/sparql'),
+    mappings: {
+      '.rq': 'application/sparql-query',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/stylus/stylus'),
+    mappings: {
+      '.styl': 'text/x-styl',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/soy/soy'),
+    mappings: {
+      '.soy': 'text/x-soy',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/smalltalk/smalltalk'),
+    mappings: {
+      '.st': 'text/x-stsrc',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/slim/slim'),
+    mappings: {
+      '.slim': 'application/x-slim',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/sieve/sieve'),
+    mappings: {
+      '.sieve': 'application/sieve',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/scheme/scheme'),
+    mappings: {
+      '.ss': 'text/x-scheme',
+      '.sls': 'text/x-scheme',
+      '.scm': 'text/x-scheme',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/rst/rst'),
+    mappings: {
+      '.rst': 'text/x-rst',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/rpm/rpm'),
+    mappings: {
+      '.rpm': 'text/x-rpm-spec',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/q/q'),
+    mappings: {
+      '.q': 'text/x-q',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/puppet/puppet'),
+    mappings: {
+      '.pp': 'text/x-puppet',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/pug/pug'),
+    mappings: {
+      '.pug': 'text/x-pug',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/protobuf/protobuf'),
+    mappings: {
+      '.proto': 'text/x-protobuf',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/properties/properties'),
+    mappings: {
+      '.properties': 'text/x-properties',
+      '.gitattributes': 'text/x-properties',
+      '.gitignore': 'text/x-properties',
+      '.editorconfig': 'text/x-properties',
+      '.ini': 'text/x-ini',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/pig/pig'),
+    mappings: {
+      '.pig': 'text/x-pig',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/asciiarmor/asciiarmor'),
+    mappings: {
+      '.pgp': 'application/pgp',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/oz/oz'),
+    mappings: {
+      '.oz': 'text/x-oz',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/pascal/pascal'),
+    mappings: {
+      '.pas': 'text/x-pascal',
+    },
+  },
+  {
+    install: () => import('codemirror/mode/toml/toml'),
+    mappings: {
+      '.toml': 'text/x-toml',
     },
   },
 ]
@@ -375,7 +544,7 @@ function getInnerModeName(
  * @param stream       The StringStream for the current line
  * @param state        The current mode state (if any)
  * @param addModeClass Whether or not to append the current (inner) mode name
- *                     as an extra CSS clas to the token, indicating the mode
+ *                     as an extra CSS class to the token, indicating the mode
  *                     that produced it, prefixed with "cm-m-". For example,
  *                     tokens from the XML mode will get the cm-m-xml class.
  */

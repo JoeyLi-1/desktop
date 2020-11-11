@@ -1,5 +1,5 @@
 import * as React from 'react'
-import * as classNames from 'classnames'
+import classNames from 'classnames'
 
 interface IListRowProps {
   /** the total number of row in this list */
@@ -29,7 +29,7 @@ interface IListRowProps {
   /** callback to fire when the row receives a mouseover event */
   readonly onRowMouseOver: (index: number, e: React.MouseEvent<any>) => void
 
-  /** callback to fire when the row receieves a mousedown event */
+  /** callback to fire when the row receives a mousedown event */
   readonly onRowMouseDown: (index: number, e: React.MouseEvent<any>) => void
 
   /** callback to fire when the row is clicked */
@@ -44,6 +44,9 @@ interface IListRowProps {
    * whether or not to present a hover state for the list row.
    */
   readonly selectable: boolean
+
+  /** a custom css class to apply to the row */
+  readonly className?: string
 }
 
 export class ListRow extends React.Component<IListRowProps, {}> {
@@ -68,7 +71,8 @@ export class ListRow extends React.Component<IListRowProps, {}> {
     const className = classNames(
       'list-item',
       { selected },
-      { 'not-selectable': this.props.selectable === false }
+      { 'not-selectable': this.props.selectable === false },
+      this.props.className
     )
     const role = this.props.ariaMode === 'menu' ? 'menuitem' : 'option'
 

@@ -1,13 +1,13 @@
 ### Download Desktop
-  - [ ] User can download latest (Mac & Windows) Desktop from https://desktop.github.com/    
-    - [ ] Mac: https://central.github.com/deployments/desktop/desktop/latest/darwin
+  - [ ] [User can download latest (Mac & Windows) Desktop](https://desktop.github.com/) 
+    - [ ] [Mac](https://central.github.com/deployments/desktop/desktop/latest/darwin)
       - [ ] Homebrew package manager: `brew cask install github-desktop`
-    - [ ] Windows: https://central.github.com/deployments/desktop/desktop/latest/win32
+    - [ ] [Windows](https://central.github.com/deployments/desktop/desktop/latest/win32)
       - [ ] Chocolatey package manager: `choco install github-desktop`
       - [ ] 64-bit and up
     - [ ] Data is retained if you download and open a fresh copy
-  - [ ] Release notes page is up-to-date in app and here https://desktop.github.com/release-notes/
-  - [ ] Help page is accessible https://help.github.com/desktop/
+  - [ ] Release notes page is up-to-date in app and can be accessed from [here](https://desktop.github.com/release-notes/)
+  - [ ] [Help page](https://help.github.com/desktop/) is accessible
   - [ ] 'Please update' notification shown in Classic apps
 
 ### Welcome Flow
@@ -44,7 +44,18 @@
     - [ ] Checked by default; user can uncheck. (Should not be checked by default if user on free plan only.)
       - [ ] Clicking `Finish`, results in user being signed-in successfully
     - [ ] `Cancel` returns to initial Configure Git page
-
+    
+### Onboarding & Tutorial
+  - [ ] Onboarding shown if user is new to Desktop and has no repositories in the application
+    - [ ] If user logged in during sign-up process with repository lists for GitHub.com and/or Enterprise
+    - [ ] Always show suggested steps: Clone repository, Add existing repository, Add new repository
+    - [ ] If logged into GitHub, show button for creating tutorial
+      - [ ] Adding a repository will automatically exit Onboarding
+        - [ ] User can revert to Onboarding if all repositories are removed
+      - [ ] Tutorial can only be started if there is no local or remote `desktop-tutorial` repository, else error surfaced
+        - [ ] Repository is created as first step, with green checkmarks for each completed step. 
+	  - [ ] User can click `Exit Tutorial` anytime to return to Onboarding page
+      
 ### Repositories landing page; default no repositories 
   - [ ] Create New Repository (Mac: `⌘N`; Windows: `Ctrl+N`)
     - [ ] Modal opens with name, path (choose option), readme (unchecked), git ignore, license. Name and path mandatory.
@@ -99,7 +110,7 @@
   - [ ] Double-clicking local desktop icon opens the application (Mac OS only)
   - [ ] Double clicking top nav bar toggles full-screen / last used screen-size (Mac OS only); Exit by (Mac: `^⌘f11`; Windows: `Alt`)
   - [ ] Clicking Desktop icon in dock/taskbar opens the application
-  - [ ] Changing desktop icon name while app is open results in package error; closed app name change is successful
+  - [ ] Changing desktop icon name while app is open results in package error; if app is closed then name change successful
 
 ### GitHub Desktop menu top-level
   - [ ] About GitHub Desktop
@@ -122,25 +133,30 @@
       - [ ] Enterprise handle, avatar, `sign out` button, if user signed in
       - [ ] User can sign out of either account
       - [ ] User can be signed-in to both Enterprise and GitHub.com at same time  
+    - [ ] Integrations
+      - [ ] External Editor options shown in dropdown; else show "Install Atom?" link
+      - [ ] Shell options shown in dropdown
     - [ ] Git
       - [ ] Username and email are displayed if `.gitconfig` configured for Welcome flow
       - [ ] `Save` button saves any changes made
       - [ ] `Cancel` button does not save any changes made; modal closed
     - [ ] Appearance
       - [ ] Light theme is default
-      - [ ] Dark theme is optional      
+      - [ ] Dark theme is optional 
+      - [ ] For Mac, users can opt to match system preference theme with checkbox
     - [ ] Advanced
-      - [ ] External Editor options shown in dropdown; else show "Install Atom?" link
-      - [ ] Shell options shown in dropdown
-      - [ ] Shared usage data option; selection carried through from Welcome flow
-        - [ ] `anonymous usage data` link opens https://desktop.github.com/usage-data/
-        - [ ] Verify postive `stats-opt-out` value in Dev Tools > Application > Local storage > file://
+      - [ ] Stashing options include "Ask me..", "Always bring my changes...", and "Always stash...". "Ask Me" is default.
       - [ ] Confirmation dialogue for removing repositories is checked by default; user can toggle
-          - [ ] Verify postive `ConfirmDiscardChanges` value in Dev Tools > Application > Local storage > file://
+        - [ ] Verify positive `ConfirmDiscardChanges` value in Dev Tools > Application > Local storage > file://
       - [ ] Confirmation dialogue for discarding files is checked by default; user can toggle
-          - [ ] Verify postive `ConfirmRepoRemoval` value in Dev Tools > Application > Local storage > file://
+        - [ ] Verify positive `ConfirmRepoRemoval` value in Dev Tools > Application > Local storage > file://
+      - [ ] Confirmation dialogue for force pushing files is checked by default; user can toggle
+        - [ ] Verify positive `confirmForcePush` value in Dev Tools > Application > Local storage > file://
       - [ ] `Save` button saves any changes made
       - [ ] `Cancel` button does not save any changes made; modal closed
+      - [ ] Shared usage data option; selection carried through from Welcome flow
+        - [ ] `anonymous usage data` link opens https://desktop.github.com/usage-data/
+        - [ ] Verify positive `stats-opt-out` value in Dev Tools > Application > Local storage > file://
   - [ ] Install command line tool installs tool at `/usr/local/bin/github` (Mac only as Windows done automagically; Helper may require password, else error message)
     - [ ] If already installed, user sees: "The command line tool has been installed at /usr/local/bin/github"
     - [ ] Clicking `OK` closes modal
@@ -168,6 +184,8 @@
   - [ ] Show History (Mac: `⌘2`; Windows: `Ctrl+2`)
   - [ ] Show Repositories List (Mac: `⌘T`; Windows: `Ctrl+T`)
   - [ ] Show Branches List (Mac: `⌘B`; Windows: `Ctrl+B`)
+  - [ ] Go to Summary (Mac: `⌘G`; Windows: `Ctrl+G`)
+  - [ ] Show/Hide Stashed Changes (Mac: `^H`; Windows: `Ctrl+H`)
   - [ ] Enter Full Screen (Mac: `^⌘F`; Windows: `F11`)
   - [ ] Reset Zoom (Mac: `⌘0`; Windows: `Ctrl+0`)
   - [ ] Zoom In (Mac: `⌘=`; Windows: `Ctrl+=`)
@@ -227,11 +245,21 @@
     - [ ] Merge hint shows status and branches to be merged
     - [ ] `Merge` button only activated if something to merge (includes awaiting conflicts)
       - [ ] If merged, success banner is shown temporarily; user can `X` to remove
-      - [ ] If conflicts, conflict modal shows quality of files, ability to open in [editor], open in command line, `Abort` button, while `Commit merge` button is deactivated until files are resolved; Changes tab shows all files 
+      - [ ] If conflicts, conflict modal shows quantity of files, ability to open in [editor], open in command line, `Abort` button, while `Commit merge` button is deactivated until files are resolved; Changes tab shows all files 
         - [ ] If conflict resolved, files marked green, and user can click `Commit merge` button
 	    - [ ] If merged, success banner is shown temporarily; user can `X` to remove
 	    - [ ] Binary files must be resolved in command line before committing merge
         - [ ] Aborting partially resolved commit surfaces "Are you sure?" dialogue; `Cancel` or `Abort merge` buttons
+  - [ ] Rebase Current Branch...
+    - [ ] User can filter to find existing branches
+    - [ ] User can select branch, other than current one
+    - [ ] Rebase hint shows status and branches to be merged
+    - [ ] `Start rebase` button only activated if something to rebase
+      - [ ] If rebase, success banner is shown temporarily; user can `X` to remove
+      - [ ] If conflicts, conflict modal shows quantity of files, ability to open in [editor], open in command line, `Abort` button, while `Continue rebase` button is deactivated until files are resolved
+        - [ ] If conflicts resolved, files marked green, and user can click `Continue rebase` button
+	    - [ ] If rebased, success banner is shown temporarily; user can `X` to remove
+        - [ ] Aborting partially resolved rebase surfaces "Are you sure?" dialogue; `Cancel` or `Abort merge` buttons
   - [ ] Compare on GitHub (Mac: `⇧⌘C`; Windows: `Ctrl+Shift+C`) (if repository already published on `github.com`)
   - [ ] Create Pull Request (Mac: `⌘R`; Windows: `Ctrl+R`) opens Pull Request on `github.com` 
     - [ ] If branch unpublished, dialogue asks to publish the branch
@@ -244,14 +272,21 @@
   - [ ] `Report Issue...` opens issue filing in Desktop repository on `github.com`
   - [ ] `Contact GitHub Support...` opens `https://github.com/contact` page with user and build prepopulated
   - [ ] `Show User Guides` opens Desktop help page on `github.com`
+  - [ ] `Show Keyboard Shortcuts` opens `https://help.github.com/en/desktop/getting-started-with-github-desktop/keyboard-shortcuts-in-github-desktop`
   - [ ] `Show Logs in Finder/Explorer` opens Finder/Explorer logs in local directory
     - [ ] Mac: `ls ~/Library/Application\ Support/GitHub\ Desktop/Logs/*.log`
     - [ ] Windows: `%LOCALAPPDATA%\\Desktop\\*.desktop.production.log`
   - [ ] About GitHub Desktop (Windows only)
+  
+### Next Steps
+ - [ ] Up to four suggested steps are shown at any given time, contingent on the state of the repository and/or branch
+   - [ ] First step is not always shown, and it can be `View Stash`, `Pull Origin`, `Pull Origin`, `Create Pull Request`, `Publish Repository`
+   - [ ] Other steps are `Open in [editor]` with Preferences/Options link, `Show in [Finder/Explorer]` and `View in GitHub`
 
 ### Repositories list
   - [ ] Current repository is always shown in top slot with respective icon; if repository exists
-  - [ ] Opening list shows all repositories in categorized alpha format with a working filter
+  - [ ] Opening list shows all repositories, categorized by owner in alpha format with a working filter
+    - [ ] If more than six repositories, a Recent group will appear at the top of the list; limit 3 repositories
     - [ ] `ESC` clears the filter
     - [ ] Search filter match results in bold characters
     - [ ] A repository with uncommitted files shows a `•` next to name
@@ -285,6 +320,11 @@
 	- [ ] User can open in finder, preferred editor, or OS default program  
   - [ ] Panes can be resized horizontally, and contents resize to take the full width
     - [ ] Quitting Desktop and relaunching remembers pane sizes
+  - [ ] Uncommitted files are optionally stashed if user attempts to switch branches; depends on Preferences.
+    - [ ] Modal asks user to stash on current branch or bring changes to new branch; `Cancel` or `Switch Branch` buttons
+      - [ ] If stashed then changes shown under Stashed Changes section below Changes tab when returning to the original branch
+        - [ ] Stashed changes section show all stashed files and diffs; user can discard or restore to Changes
+      - [ ] If moved to new branch, all previously changed files will exist under Changes tab on the new branch
 
 ### History tab
   - [ ] History tab shows commits on your current branch by default
@@ -330,8 +370,12 @@
     - [ ] `Push` with number of commits badge is decremented or reverts to `Fetch origin`
   - [ ] `Undo` button disabled if user is pushing commit
   - [ ] User can publish a new repository with no commits (aka unborn repository/branch)
-  - [ ] User can make new branch the default branch, by making the intial commit on the new branch
-  - [ ] User can select individual file(s) -- and individial lines of a file(s) -- to commit at a time
+  - [ ] User can make new branch the default branch, by making the initial commit on the new branch
+  - [ ] User can select individual file(s) -- and individual lines of a file(s) -- to commit at a time
+  - [ ] Forked messaging shown if user cannot write to cloned repository and there are changes
+    - [ ] If user opts to fork the repository, a confirmation dialogue surfaced. Errors caught within the dialogue.
+    - [ ] Clicking confirm results in successful fork creation
+  - [ ] Protected branches messaging shown if branch is protected and there are changes
   
 ### Co-authoring (Changes tab)
   - [ ] clicking co-author icon toggles co-author field; or right-click within commit area
@@ -347,7 +391,7 @@
         - [ ] Navigating away from the Changes tab will clear red tags 
      - [ ] Toggling the co-author icon clears the field
   - [ ] All co-authors show up in History and diff view
-    - [ ] Commits with `Co-Authored-By: Name <username@github.com>`in the decription field reveal avatar of user    
+    - [ ] Commits with `Co-Authored-By: Name <username@github.com>`in the description field reveal avatar of user    
     - [ ] Hovering over an avatar reveals all tagged users
     - [ ] Hovering over the "people" text reveals all names/emails of tagged users
   - [ ] Undoing a commit re-enables the valid tags
@@ -410,7 +454,9 @@
    - [ ] Results in chronological order, with name, id number, date, username, and CI status (if enabled)
      - [ ] Status checks run frequently in background, especially if yellow
      - [ ] If user hovers over CI status icons, tooltips show individual/group status details
- - [ ] PR status can be updated independently of respective PR
+ - [ ] Pull Request status in the list can be updated independently of respective Pull Request being viewed (background job)
+ - [ ] Show link to upstream pull requests in pull request list of a fork if PR for current branch is in upstream repo
+ - [ ] Show link to create a pull request if there is no PR for current branch
  
 ### Security
  - [ ] `Untrusted server` warning surfaced if GitHub cannot verify the identity of `api.github.com`; user can `Cancel` or `Continue`

@@ -6,20 +6,22 @@ import { Repository } from '../../models/repository'
  * is ambiguous are handled.
  *
  * Examples:
- *  - master -> refs/heads/master
- *  - heads/Microsoft/master -> refs/heads/Microsoft/master
+ *  - main -> refs/heads/main
+ *  - heads/Microsoft/main -> refs/heads/Microsoft/main
  *
  * @param branch The local branch name
  */
 export function formatAsLocalRef(name: string): string {
   if (name.startsWith('heads/')) {
-    // In some cases, Git will report this name explicitly to distingush from
+    // In some cases, Git will report this name explicitly to distinguish from
     // a remote ref with the same name - this ensures we format it correctly.
     return `refs/${name}`
-  } else {
+  } else if (!name.startsWith('refs/heads/')) {
     // By default Git will drop the heads prefix unless absolutely necessary
     // - include this to ensure the ref is fully qualified.
     return `refs/heads/${name}`
+  } else {
+    return name
   }
 }
 
